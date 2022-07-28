@@ -1,0 +1,22 @@
+1 ###
+SELECT CustomerName , round (sum(Total_priceOfproduct ),2) AS Total_sales From
+(
+SELECT [Customers].CustomerName, [ORDERS].OrderID, [OrderDetails].ProductID, [OrderDetails].Quantity, [Products].Price as PriceOFproduct, [OrderDetails].Quantity * [Products].Price AS Total_priceOfproduct FROM [Customers]
+INNER JOIN [ORDERS] ON [Customers].CustomerID = [ORDERS].CustomerID
+INNER JOIN [OrderDetails] ON [ORDERS].OrderID = [OrderDetails].OrderID
+INNER JOIN [Products] ON [OrderDetails].ProductID = [Products].ProductID
+)
+GROUP BY CustomerName ORDER BY SUM(Total_priceOfproduct) desc
+
+
+Bouns 2 ###
+SELECT EmployeFirstName, EmployeeLastName, SUM(Quantity) Total_Quantity FROM (
+SELECT employees.FirstName AS EmployeFirstName, employees.lastname AS EmployeeLastName, orders.orderID, orderdetails.Quantity FROM [Orders]
+INNER JOIN [employees] ON [Orders].employeeID= [employees].employeeID
+INNER JOIN [orderdetails] ON [Orders].orderID= [orderdetails].orderID
+INNER JOIN [products] on [products].productID= [orderdetails].ProductID
+INNER JOIN [categories] on [categories].categoryID= [products].categoryID
+WHERE [categories].CategoryName= 'Beverages')
+GROUP BY EmployeFirstName, EmployeeLastName ORDER BY Total_quantity desc
+
+
